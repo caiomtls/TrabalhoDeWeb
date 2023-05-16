@@ -2,8 +2,6 @@
 ---
 - Para instalar os requerimentos: $ pip install -r requirements.txt
 
- source ambiente-virtual/bin/activate
+- Para ativar o ambiente virtual: $ source ambiente-virtual/bin/activate
 
- - in back-end/mysite
-
- python manage.py runserver
+- Para rodar (dentro de back-end/mysite): $ python manage.py runserver

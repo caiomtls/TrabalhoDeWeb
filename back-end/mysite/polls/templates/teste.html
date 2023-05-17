@@ -10,5 +10,14 @@
 <p>My second paragraph.</p>
 {%endif%}
 
+{% if trails|length > 2 %}
+<ul> 
+    {% for o in trails %}
+        <li>
+            {{o}}
+        </li>
+    {%endfor%}
+</ul>
+{%endif%}
 </body>
 </html>

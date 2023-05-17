@@ -3,4 +3,4 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return render(request, 'teste.html', {"nome":"aaaa"})
+    return render(request, 'teste.html', {"nome":"aaaa", "trails":["a","b","c"]})

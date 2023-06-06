@@ -35,55 +35,51 @@
 		/>
 	</head>
 
+	<body>
     {% block content %}
-					<div class="container-fluid">
-						<!-- Page Heading -->
-						<h1 class="h3 mb-2 text-gray-800">{{nome}}</h1>
+			<div class="container-fluid">
+			<!-- Page Heading -->
+				<h1 class="h3 mb-2 text-gray-800">Estoque</h1>
+					<!-- DataTales Example -->
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">
+								Disponivel no Estoque
+							</h6>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table
+									class="table table-bordered"
+									id="dataTable"
+									width="100%"
+									cellspacing="0"
+								>
+								<!-- <thead> -->
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Produto</th>
+                      <th>Quantidade</th>
+                    </tr>
+                  </thead>
 
+                  <tbody>
+                    {% for produtos in dados %}
+                      <tr>
+                        <td>{{ produtos.id }}</td>
+                        <td>{{ produtos.nome }}</td>
+                        <td>{{ produtos.quantidade }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
 
-						<!-- DataTales Example -->
-						<div class="card shadow mb-4">
-							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary">
-									Disponivel no {{nome}}
-								</h6>
-							</div>
-							<div class="card-body">
-								<div class="table-responsive">
-									<table
-										class="table table-bordered"
-										id="dataTable"
-										width="100%"
-										cellspacing="0"
-									>
-										<!-- <thead> -->
-                                            <thead>
-                                            <tr>
-                                            {% for coluna in tabela_Prop %}
-                                                <th>{{ coluna }}</th>
-                                            {% endfor %}
-                                            </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                {% for produtos in dados %}
-                                                <tr>
-                                                    <td>{{ produtos.id }}</td>
-                                                    <td>{{ produtos.produto }}</td>
-                                                    <td>{{ produtos.quantidade }}</td>
-                                                </tr>
-                                                {% endfor %}
-
-                                            </tbody>
-
-									</table>
-								</div>
+								</table>
 							</div>
 						</div>
 					</div>
-                    {% endblock %}
-
-
+			</div>
+    {% endblock %}
 		<!-- Bootstrap core JavaScript-->
 		<script src={% static "../static/vendor/jquery/jquery.min.js" %}></script>
 		<script src={% static "../static/vendor/bootstrap/js/bootstrap.bundle.min.js" %}></script>

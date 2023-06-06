@@ -1,30 +1,56 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import redirect
+from . import models
 
+@csrf_exempt
+def login2(request):
+    if request.method == "GET":
+        return render(request, 'login.html')
+    else:
+        username = request.POST.get("username")
+        senha = request.POST.get("senha")
 
-def index(request):
-    return render(request, 'index.html')
+        user = authenticate(username=username, password=senha)
 
-def login(request):
-    return render(request, 'login.html')
+        if user:
+            login(request, user)
+            return redirect('index')
+        else:
+            error_message = 'Credenciais inválidas. Tente novamente.'
+            return render(request, 'login.html', {'error_message': error_message})
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+def index2(request):
+    if request.user.is_authenticated:
+        produtos = models.Produto.objects.all()
+        return render(request, 'index.html', {"dados": produtos})
+    else: return redirect('login')
 
 def clientes(request):
-    return render(request, 'clientes.html', {"nome":"Clientes", "tabela_Prop": ["ID","Nome","Email", "Telefone"],"dados":[
-        {"id":"1","nome":"Doe","email":"john@example.com","telefone":"(32)93123-8831",},
-        {"id":"2","nome":"Moe","email":"mary@example.com","telefone":"(12)93533-8512"},
-        {"id":"3","nome":"Dooley","email":"july@example.com","telefone":"(16)94223-3838"}]})
+    if request.user.is_authenticated:
+        clientes = models.Cliente.objects.all()
+        return render(request, 'clientes.html', {"dados": clientes})
+    else: return redirect('login')
 
-def produtos(request):
-    return render(request, 'produtos.html', {"nome":"Produtos", "tabela_Prop": ["ID","Nome","Quantidade", "Preço"],"dados":[
-        {"id":"1","nome":"Pão","quantidade":"3","preco":"5,50",},
-        {"id":"2","nome":"Danone","quantidade":"5","preco":"2,90"},
-        {"id":"3","nome":"Bombom","quantidade":"7","preco":"1,50"}]})
+def vendas(request):
+    if request.user.is_authenticated:
+        vendas = models.Venda.objects.all()
+        return render(request, 'produtos.html', {"dados":vendas})
+    else: return redirect('login')
 
 def fornecedores(request):
-    return render(request, 'fornecedores.html')
+    if request.user.is_authenticated:
+        fornecedores = models.Fornecedor.objects.all()
+        return render(request, 'fornecedores.html', {"dados": fornecedores})
+    else: return redirect('login')
 
 def pedidos(request):
-    return render(request, 'pedidos.html')
-
-# def index(request):
-#     return render(request, 'teste.html', {"nome":"aaaa", "trails":["a","b","c", "d"]})
+    if request.user.is_authenticated:
+        pedidos = models.Compra.objects.all()
+        return render(request, 'pedidos.html', {"dados": pedidos})
+    else: return redirect('login')

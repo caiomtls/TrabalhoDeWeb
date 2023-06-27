@@ -1,4 +1,5 @@
 {%load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -38,10 +39,15 @@
 		<!-- Page Wrapper -->
 		<div id="wrapper">
 			<!-- Sidebar -->
+
+			<ul class="navbar-nav {% if user.groups.all.0.name == 'Gerente' %}bg-gradient-dark{% elif user.groups.all.0.name == 'Estoque' %}bg-gradient-primary{% elif user.groups.all.0.name == 'Vendedor' %}bg-gradient-info{% endif %} sidebar sidebar-dark accordion" id="accordionSidebar">
+    <!-- Conteúdo da navbar -->
+{% comment %} </ul> {% endcomment %}
+{% comment %}
 			<ul
-			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			class="navbar-nav bg-gradient-secondary sidebar sidebar-dark accordion"
 			id="accordionSidebar"
-		>
+		> {% endcomment %}
 			<!-- Sidebar - Brand -->
 			<a
 				class="sidebar-brand d-flex align-items-center justify-content-center"
@@ -72,50 +78,57 @@
 			</li>
 
 			<!-- Nav Item - Utilities Collapse Menu -->
-			<li class="nav-item">
-				<a
-					class="nav-link collapsed"
-					href="{% url 'clientes' %}"
-					aria-expanded="true"
-				>
-					<i class="fas fa-fw fa-users"></i>
-					<span>Clientes</span>
-				</a>
-			</li>
+			 {% if user.groups.all.0.name != "Estoque" %}
+				<li class="nav-item">
+					<a
+						class="nav-link collapsed"
+						href="{% url 'clientes' %}"
+						aria-expanded="true"
+					>
+						<i class="fas fa-fw fa-users"></i>
+						<span>Clientes</span>
+					</a>
+				</li>
+			{% endif %}
 
-			<li class="nav-item">
-				<a
-					class="nav-link collapsed"
-					href="{% url 'vendas' %}"
-					aria-expanded="true"
-				>
-					<i class="fas fa-fw fa-cart-plus"></i>
-					<span>Vendas</span>
-				</a>
-			</li>
+			{% if user.groups.all.0.name != "Estoque" %}
+				<li class="nav-item">
+					<a
+						class="nav-link collapsed"
+						href="{% url 'vendas' %}"
+						aria-expanded="true"
+					>
+						<i class="fas fa-fw fa-cart-plus"></i>
+						<span>Vendas</span>
+					</a>
+				</li>
+			{% endif %}
 
-			<li class="nav-item">
-				<a
-					class="nav-link collapsed"
-					href="{% url 'fornecedores' %}"
-					aria-expanded="true"
-				>
-					<i class="fas fa-fw fa-truck"></i>
-					<span>Fornecedores</span>
-				</a>
-			</li>
+			{% if user.groups.all.0.name != "Vendedor" %}
+				<li class="nav-item">
+					<a
+						class="nav-link collapsed"
+						href="{% url 'fornecedores' %}"
+						aria-expanded="true"
+					>
+						<i class="fas fa-fw fa-truck"></i>
+						<span>Fornecedores</span>
+					</a>
+				</li>
+      {% endif %}
 
-			<li class="nav-item">
-				<a
-					class="nav-link collapsed"
-					href="{% url 'pedidos' %}"
-					aria-expanded="true"
-				>
-					<i class="fas fa-fw fa-file"></i>
-					<span>Pedidos</span>
-				</a>
-			</li>
-
+			{% if user.groups.all.0.name != "Vendedor" %}
+				<li class="nav-item">
+					<a
+						class="nav-link collapsed"
+						href="{% url 'pedidos' %}"
+						aria-expanded="true"
+					>
+						<i class="fas fa-fw fa-file"></i>
+						<span>Pedidos</span>
+					</a>
+				</li>
+			{% endif %}
 			<li class="nav-item">
 				<a
 					class="nav-link collapsed"
@@ -174,7 +187,7 @@
 								/>
 								<div class="input-group-append">
 									<button
-										class="btn btn-primary"
+										class="btn {% if user.groups.all.0.name == 'Gerente' %}btn-dark{% elif user.groups.all.0.name == 'Estoque' %}btn-primary{% elif user.groups.all.0.name == 'Vendedor' %}btn-info{% endif %}"
 										type="button"
 									>
 										<i class="fas fa-search fa-sm"></i>

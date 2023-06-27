@@ -14,6 +14,28 @@ def login2(request):
 
         user = authenticate(username=username, password=senha)
 
+        import pika
+        credentials = pika.PlainCredentials('guest', 'guest')
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost',credentials=credentials))
+
+        channel = connection.channel()
+
+        channel.queue_declare(queue='task_queue', durable=True)
+
+        if user:
+            message = "O usuário com nome " + username + " logou"
+        else:
+            message = "O usuário com nome " + username + " tentou logar"
+        
+        channel.basic_publish(
+            exchange='',
+            routing_key='task_queue',
+            body=message,
+            properties=pika.BasicProperties(
+                delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
+            ))
+        connection.close()
+
         if user:
             login(request, user)
             return redirect('index')
